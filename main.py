@@ -30,8 +30,12 @@ def print_line(guess, random_number):
 
 def main():
     print('A simple number guessing game using bubble sort.')
-    diff = int(input("Choose a number that will be the upper boundary of the randomness: "))
-    tries_og = int(input('Choose number of tries: '))
+    try:
+        diff = int(input("Choose a number that will be the upper boundary of the randomness: "))
+        tries_og = int(input('Choose number of tries: '))
+    except ValueError:
+        print('Next time try inputting numbers')
+        return 0
     tries = tries_og
     random_number = r.randrange(0, diff)
     guesses.append(random_number)
