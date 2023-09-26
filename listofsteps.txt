@@ -5,3 +5,37 @@ Bubble sort:
 3.If the element at i is greater than the element at i + 1, swap both the elements
 4.Else, move to the next element.
 
+My program:
+
+1.Import the random module as r to generate random numbers.
+
+2.Create an empty list called guesses to store the user's guesses.
+
+3.Define a function called bubble_sort to sort a list using the Bubble Sort algorithm (not used in the current program).
+
+4.Define a function called print_line to print a line of guesses, indicating the current guess, the correct answer, and other guesses made by the user.
+
+5.In the main function:
+    a. Print a message to introduce the number guessing game.
+    b. Prompt the user to enter the upper boundary of the random number generation range as 'diff'.
+    c. Prompt the user to enter the number of tries they want as 'tries_og'.
+    d. Implement error handling to handle cases where the user enters non-integer values.
+    e. Set 'tries' to 'tries_og'.
+    f. Generate a random number within the specified range (0 to 'diff') and store it in 'random_number'.
+    g. Add the initial random number to the 'guesses' list.
+    h. Print a message to inform the user of the range of the random number.
+
+6.Start a game loop that continues until the user either guesses the correct number or runs out of tries.
+    a. Display the number of tries remaining to the user.
+    b. Prompt the user to enter their guess as 'guess'.
+    c. Implement error handling to handle cases where the user enters non-integer values.
+    d. Check if the user's guess is equal to the 'random_number':
+
+        If it is, decrement 'tries' by 1, print a win message, calculate and display the user's score.
+        If 'tries' is 0, print a message that no score can measure the skill since the user guessed it in 0 tries.
+        Exit the game loop.
+    e. If the guess is greater than 'random_number', decrement 'tries' by 1, add the guess to 'guesses', and print "Too large".
+        Call the 'print_line' function to display the current state of guesses.
+    f. If the guess is less than 'random_number', decrement 'tries' by 1, add the guess to 'guesses', and print "Too small".
+        Call the 'print_line' function to display the current state of guesses.
+7.If the game loop ends and the user hasn't guessed the correct number, print a message indicating that the user has lost, revealing the 'random_number'.
