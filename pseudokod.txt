@@ -1,0 +1,73 @@
+Import 'random' as 'r'
+
+Create empty list 'guesses'
+
+Function 'bubble_sort' with parameter 'arr':
+    Set 'n' to the length of 'arr'
+    For 'i' in range from 0 to 'n':
+        Set 'swapped' to False
+        For 'j' in range from 0 to 'n - i - 1':
+            If 'arr[j]' is greater than 'arr[j + 1]':
+                Swap 'arr[j]' and 'arr[j + 1]'
+                Set 'swapped' to True
+        If 'swapped' is False:
+            Break the loop
+    Return 'arr'
+
+Function 'print_line' with parameters 'guess' and 'random_number':
+    Print "Your guesses were:"
+    Sort 'guesses' using 'bubble_sort'
+    For each 'i' in the sorted 'guesses':
+        If 'i' is equal to 'guess':
+            Print "(" + 'i' + ")", followed by a comma and space
+        Else if 'i' is equal to 'random_number':
+            Print "You should guess here", followed by a comma and space
+        Else:
+            Print 'i', followed by a comma and space
+    Print a newline character
+
+Function 'main':
+    Print "A simple number guessing game using bubble sort."
+    Try to:
+        Read an integer 'diff' from the user for the upper boundary of randomness
+        Read an integer 'tries_og' from the user for the number of tries
+    Except ValueError:
+        Print "Next time try inputting numbers"
+        Return
+    Set 'tries' to 'tries_og'
+    Generate a random number 'random_number' between 0 and 'diff' using 'r.randrange'
+    Add 'random_number' to 'guesses'
+    Print a message indicating the range of the random number
+
+    While True:
+        Print "You have" + 'tries' + "tries left"
+        Try to:
+            Read an integer 'guess' from the user for their guess
+        Except ValueError:
+            Print "You must enter a number, try again"
+            Continue to the next iteration
+        If 'guess' is equal to 'random_number':
+            Decrement 'tries' by 1
+            Print "You win, the number was" + 'random_number' + ". You guessed it in" + ('tries_og' - 'tries') + "tries"
+            Try to:
+                Calculate 'score' as ('diff' raised to 1.3) floor divided by 'tries_og' multiplied by ('tries_og' - 'tries' raised to 1.5)
+                Print "Your score is: " + 'score'
+            Except ZeroDivisionError:
+                Print "You guessed it in 0 tries, no score can measure your skill"
+            Break the loop
+        Else if 'guess' is greater than 'random_number':
+            Decrement 'tries' by 1
+            Add 'guess' to 'guesses'
+            Print "Too large"
+            Call 'print_line' with 'guess' and 'random_number' as arguments
+        Else if 'guess' is less than 'random_number':
+            Decrement 'tries' by 1
+            Add 'guess' to 'guesses'
+            Print "Too small"
+            Call 'print_line' with 'guess' and 'random_number' as arguments
+        If 'tries' is equal to 0:
+            Print "You lost, the number was" + 'random_number'
+            Break the loop
+
+If __name__ is equal to '__main__':
+    Call 'main' function to start the game
