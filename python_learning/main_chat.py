@@ -6,7 +6,7 @@ def chatbot_response(user_input):
         r".*\b(how are you|how's it going)\b.*": "I'm just a computer program, but I'm functioning well. How can I help you?",
         r".*\b(bye|goodbye)\b.*": "Goodbye! Have a great day!",
         r".*\b(thank you|thanks)\b.*": "You're welcome! If you have any more questions, feel free to ask.",
-        r".*\b(thank you|thanks)\b.*": "You're welcome! If you have any more questions, feel free to ask."
+        r".*\b(where|where izabela)\b.*": "She is locked up in the basement."
     }
 
     for pattern, response in responses.items():
