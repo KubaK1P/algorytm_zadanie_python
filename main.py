@@ -1,75 +1,157 @@
-import random as r
-
-guesses = []
-
-
-def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(0, n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-        if not swapped:
-            break
-    return arr
+import user as us
+import sorter as sr
+import pprint
 
 
-def print_line(guess, random_number):
-    print('Your guesses were: ')
-    for i in bubble_sort(guesses):
-        if i == guess:
-            print('(', i, ')', end=', ')
-        elif i == random_number:
-            print('You should guess here', end=', ')
-        else:
-            print(i, end=", ")
-    print('')
+def average_value(arr):
+    elements_sum = 0
+    for k in arr:
+        elements_sum += k
+    return elements_sum / len(arr)
 
 
-def main():
-    print('A simple number guessing game using bubble sort.')
-    try:
-        diff = int(input("Choose a number that will be the upper boundary of the randomness: "))
-        tries_og = int(input('Choose number of tries: '))
-    except ValueError:
-        print('Next time try inputting numbers')
-        return 0
-    tries = tries_og
-    random_number = r.randrange(0, diff)
-    guesses.append(random_number)
-    print(f'The number you must guess is in range 0 to {diff}')
-    while True:
-        print(f'You have {tries} tries left')
-        try:
-            guess = int(input('Input your number: '))
-        except ValueError:
-            print('You must enter a number, try again')
-            continue
-        if random_number == guess:
-            tries -= 1
-            print(f'You win, the number was {random_number}. You guessed it in {tries_og - tries} tries')
-            try:
-                score = (diff ** 1.3) // tries_og * (tries_og - tries) ** 1.5
-                print('Your score is : ', score)
-            except ZeroDivisionError:
-                print('You guessed it in 0 tries, no score can measure your skill')
-            break
-        elif guess > random_number:
-            tries -= 1
-            guesses.append(guess)
-            print('Too large')
-            print_line(guess, random_number)
-        elif guess < random_number:
-            tries -= 1
-            guesses.append(guess)
-            print('Too small')
-            print_line(guess, random_number)
-        if tries == 0:
-            print(f'You lost, the number was {random_number}')
-            break
+def check_if_age_is(op, age, number):
+    if op == "greater":
+        return age > number
+    elif op == "smaller":
+        return age < number
+    else:
+        print("Wrong operator")
+        return None
 
 
-if __name__ == '__main__':
-    main()
+def starts_with(letter, string):
+    return string[0] == letter
+
+
+def users_init():
+    users_arr = [
+        us.User("Jakub", 15, ["Python", "Lua", "Javascript", "C++", "Php"], True),
+        us.User("Bartosz", 13, ["Python", "Go", "Rust", "Lua", "Javascript", "Assembly", "C", "Java", "C++", "Php",
+                                "Html", "Css", "Luaua", "Typescript"], True),
+        us.User("Zygmunt", 31, ["Lua", "Cobol", "C", "Php"], False),
+        us.User("Piotr", 16, ["Python", "Javascript", "C++", "Php", "Gimp", "Blender"], True),
+        us.User("Szymon", 24, ["Python", "Javascript", "Css"], True),
+        us.User("Zbigniew", 69, ["Lua", "Assembly", "Go", "Php"], False),
+        us.User("Paweł", 15, ["Python"], True),
+        us.User("Stanisław", 72, ["Python", "Lua", "Javascript", "C++", "Php", "Cobol", "C"], False)
+    ]
+    return users_arr
+
+
+users = users_init()
+
+print("Oni znają Pythona: ")
+for i in users:
+    if "Python" in i.user_languages:
+        i.info()
+
+print("Oni są nieaktywni (imie, wiek):")
+for i in users:
+    if not i.user_is_active:
+        print(f"Info: {i.user_name} {i.user_age}")
+
+print("Oni znają co najmniej trzy języki: ")
+for i in users:
+    if i.lang_count >= 3:
+        lang_str = ""
+        for j in i.user_languages:
+            lang_str += j + " "
+        print(f"Info: {i.user_name} {lang_str}")
+
+print("Średni wiek aktywnych użytkowników: ")
+age_active_arr = []
+age_inactive_arr = []
+for i in users:
+    if i.user_is_active:
+        age_active_arr.append(i.user_age)
+    else:
+        age_inactive_arr.append(i.user_age)
+
+print(average_value(age_active_arr))
+
+print("Średni wiek nieaktywnych użytkowników: ")
+print(average_value(age_inactive_arr))
+
+print("Trzy najbardziej edukowane osoby: ")
+sorter = sr.Sorter(users)
+sorter.sort_users_by_parameter("lang_count", "desc")
+for i in range(0, 3):
+    lang_str = ""
+    for j in sorter.users[i].user_languages:
+        lang_str += j + " "
+    print(f"{i + 1}. {sorter.users[i].user_name} {lang_str}")
+
+print("Posortowani: \n Alfabetycznie: ")
+sorter.sort_users_by_parameter("name", "asc")
+for i in sorter.users:
+    i.info()
+
+print(" Przeciwnie do alfabetycznego:")
+sorter.sort_users_by_parameter("name", "desc")
+for i in sorter.users:
+    i.info()
+
+lang_count_arr = []
+for i in users:
+    lang_count_arr.append(i.lang_count)
+
+print("Użytkownik zna średnio: ", average_value(lang_count_arr), " technologii.")
+
+print("To jest grupa, która zan python: ")
+not_python_group = []
+for i in users:
+    if "Python" in i.user_languages:
+        i.info()
+    else:
+        not_python_group.append(i)
+
+print("Grupa nie znająca python:")
+for i in not_python_group:
+    i.info()
+
+print("Czy wszyscy są starsi niż 18 lat?")
+are_older = True
+for i in users:
+    if check_if_age_is("smaller", i.user_age, 18):
+        print("Nie wszyscy są starsi od 18 lat")
+        are_older = False
+        break
+
+if are_older:
+    print("Wszyscy są starsi od 18 lat")
+
+print("Czy isnieje użytkownik starszy od 30 lat? ")
+is_older = False
+for i in users:
+    if check_if_age_is("greater", i.user_age, 30):
+        print("Isnieje starszy od 30 lat, np:", i.user_name)
+        is_older = True
+        break
+
+if not is_older:
+    print("Nie isnieje")
+
+print("Najstarszy użytkownik znający Go: ")
+max_age = users[0]
+for i in users:
+    if i.user_age > max_age.user_age and "Go" in i.user_languages:
+        max_age = i
+
+max_age.info()
+
+print("Użytkownicy, którzy znają technologię na c: ")
+has_lang_that_starts_with_a_letter = False
+for i in users:
+    has_lang_that_starts_with_a_letter = False
+    for j in i.user_languages:
+        if starts_with("C", j):
+            has_lang_that_starts_with_a_letter = True
+    if has_lang_that_starts_with_a_letter:
+        i.info()
+
+print("Słownik: ")
+users_dict = {}
+for i in users:
+    users_dict.update({i.user_name: i.lang_count})
+pprint.pprint(users_dict)
